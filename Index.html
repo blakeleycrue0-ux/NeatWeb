@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeatWeb Co. — Professional Websites Built For You</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:      #03082e;
+  --surface: #060f3a;
+  --blue:    #0057a8;
+  --ocean:   #0077c8;
+  --sea:     #00aadd;
+  --foam:    #60d4f5;
+  --white:   #ffffff;
+  --off:     #d6eaf5;
+  --muted:   rgba(214,234,245,0.52);
+  --border:  rgba(0,150,210,0.15);
+  --card:    rgba(0,60,120,0.22);
+}
+
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--white);
+  font-family:'Outfit',sans-serif;
+  font-weight:300;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* CURSOR */
+#cur{width:9px;height:9px;background:var(--sea);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform .18s,background .2s}
+#cur2{width:36px;height:36px;border:1px solid rgba(0,170,220,.45);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:border-color .3s,transform .06s}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  padding:1.6rem 6rem;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(3,8,46,0.92);
+  border-bottom:1px solid var(--border);
+  backdrop-filter:blur(12px);
+}
+.logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.45rem;font-weight:600;
+  letter-spacing:.06em;color:var(--white);
+}
+.logo span{color:var(--sea)}
+.nav-links{display:flex;gap:2.8rem;list-style:none}
+.nav-links a{
+  color:var(--muted);text-decoration:none;
+  font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+  transition:color .25s;position:relative;
+}
+.nav-links a::after{content:'';position:absolute;bottom:-5px;left:0;width:0;height:1px;background:var(--sea);transition:width .3s}
+.nav-links a:hover{color:var(--white)}
+.nav-links a:hover::after{width:100%}
+.nav-cta{
+  background:transparent;
+  border:1px solid var(--sea);
+  color:var(--sea);
+  padding:.6rem 1.8rem;
+  font-family:'Outfit',sans-serif;font-size:.78rem;font-weight:500;
+  letter-spacing:.14em;text-transform:uppercase;cursor:none;
+  transition:background .3s,color .3s,box-shadow .3s;
+}
+.nav-cta:hover{background:var(--sea);color:var(--bg);box-shadow:0 0 28px rgba(0,170,220,.35)}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:flex-start;
+  padding:0 6rem;
+  position:relative;overflow:hidden;
+}
+/* subtle vignette only — no stars, no particles */
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 70% at 70% 40%, rgba(0,100,180,.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.hero-eyebrow{
+  font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--sea);margin-bottom:2rem;
+  display:flex;align-items:center;gap:.9rem;
+  opacity:0;animation:fadeUp .7s .2s forwards;
+}
+.hero-eyebrow::before{content:'';width:32px;height:1px;background:var(--sea)}
+
+h1.hl{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(4.2rem,9vw,9rem);
+  line-height:.95;letter-spacing:-.01em;
+  font-weight:700;margin-bottom:2.2rem;max-width:780px;
+}
+h1.hl .ln{display:block;overflow:hidden}
+h1.hl .ln span{
+  display:block;opacity:0;transform:translateY(105%);
+  animation:slideUp .9s cubic-bezier(.16,1,.3,1) forwards;
+}
+h1.hl .ln:nth-child(1) span{animation-delay:.3s}
+h1.hl .ln:nth-child(2) span{animation-delay:.45s}
+h1.hl .ln:nth-child(3) span{animation-delay:.6s}
+h1.hl .it{font-style:italic;color:var(--sea)}
+
+@keyframes slideUp{to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{to{opacity:1}}
+
+.hero-body{
+  max-width:480px;font-size:1.05rem;line-height:1.8;color:var(--muted);
+  margin-bottom:3rem;opacity:0;animation:fadeUp .7s .8s forwards;
+}
+.hero-acts{
+  display:flex;gap:1.4rem;align-items:center;
+  opacity:0;animation:fadeUp .7s .95s forwards;
+}
+.btn-primary{
+  background:var(--sea);color:var(--bg);
+  border:none;padding:1rem 2.8rem;
+  font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;cursor:none;
+  transition:box-shadow .3s,transform .2s,background .2s;
+  text-decoration:none;display:inline-block;
+}
+.btn-primary:hover{
+  background:var(--foam);
+  box-shadow:0 0 40px rgba(0,180,230,.4);
+  transform:translateY(-2px);
+}
+.btn-ghost{
+  color:var(--off);text-decoration:none;
+  font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;
+  display:flex;align-items:center;gap:.6rem;
+  border-bottom:1px solid rgba(214,234,245,.2);padding-bottom:.2rem;
+  transition:color .25s,border-color .25s,gap .2s;
+}
+.btn-ghost:hover{color:var(--sea);border-color:var(--sea);gap:.95rem}
+
+.hero-scroll{
+  position:absolute;bottom:3.5rem;left:6rem;
+  font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:.8rem;
+  opacity:0;animation:fadeUp .7s 1.3s forwards;
+}
+.scroll-track{width:42px;height:1px;background:var(--border);position:relative;overflow:hidden}
+.scroll-track::after{
+  content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+  background:var(--sea);animation:run 2.2s 1.5s infinite;
+}
+@keyframes run{0%{left:-100%}100%{left:100%}}
+
+/* RULE DIVIDER */
+.rule{height:1px;background:var(--border);margin:0 6rem}
+
+/* ABOUT */
+.about{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:8rem;align-items:center;
+  padding:8rem 6rem;
+}
+.about-l h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.4rem,4.2vw,3.8rem);line-height:1.08;
+  font-weight:700;margin-bottom:1.8rem;
+}
+.about-l h2 em{font-style:italic;color:var(--sea)}
+.stats-row{display:flex;gap:3.5rem;margin-top:3rem}
+.s-val{
+  font-family:'Cormorant Garamond',serif;
+  font-size:3.2rem;font-weight:700;color:var(--sea);
+  display:block;line-height:1;
+}
+.s-lbl{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-top:.35rem;display:block}
+.about-r p{font-size:.98rem;line-height:1.85;color:var(--off);margin-bottom:1.4rem}
+.about-r strong{color:var(--white);font-weight:500}
+
+/* PRICING */
+.pricing{padding:8rem 6rem;background:var(--surface)}
+.pricing-head{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:5rem;gap:3rem;
+}
+.pricing-note{max-width:320px;font-size:.92rem;line-height:1.75;color:var(--muted)}
+.sec-eyebrow{
+  font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;
+  color:var(--sea);margin-bottom:1.1rem;
+  display:flex;align-items:center;gap:.9rem;
+}
+.sec-eyebrow::before{content:'';width:26px;height:1px;background:var(--sea)}
+.sec-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.4rem,5vw,4.5rem);
+  line-height:.97;font-weight:700;
+}
+.sec-title .it{font-style:italic;color:var(--sea)}
+
+/* CARDS */
+.cards-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.pkg{
+  background:var(--bg);padding:3.2rem 2.8rem;
+  position:relative;overflow:hidden;cursor:none;
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
+}
+.pkg::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--sea),transparent);
+  transform:scaleX(0);transition:transform .5s ease;
+}
+.pkg:hover::after{transform:scaleX(1)}
+.pkg:hover{transform:translateY(-7px);z-index:2;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.pkg.feat{
+  background:linear-gradient(170deg,rgba(0,80,150,.28),rgba(3,8,46,1));
+}
+.pkg.feat::after{transform:scaleX(1);background:linear-gradient(90deg,var(--ocean),var(--sea),var(--foam))}
+
+.pkg-label{
+  display:inline-block;
+  border:1px solid var(--sea);
+  color:var(--sea);font-size:.64rem;letter-spacing:.16em;text-transform:uppercase;
+  padding:.25rem .85rem;margin-bottom:2.2rem;
+}
+.pkg-name{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.8rem;font-weight:700;color:var(--white);margin-bottom:.5rem;
+}
+.pkg-sub{font-size:.87rem;color:var(--muted);line-height:1.6;margin-bottom:2.2rem}
+.price-row{display:flex;align-items:baseline;gap:.3rem;margin-bottom:2.8rem}
+.pr-sym{font-size:1.1rem;color:var(--sea);font-weight:400}
+.pr-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:4.5rem;line-height:1;color:var(--white);font-weight:700;
+}
+.pr-per{font-size:.78rem;color:var(--muted);align-self:flex-end;padding-bottom:.6rem;margin-left:.2rem}
+.pkg-div{height:1px;background:var(--border);margin-bottom:2.2rem}
+.feat-list{list-style:none;display:flex;flex-direction:column;gap:.9rem;margin-bottom:3rem}
+.feat-list li{
+  display:flex;align-items:flex-start;gap:.9rem;
+  font-size:.88rem;line-height:1.55;color:var(--off);
+}
+.ck{
+  width:17px;height:17px;flex-shrink:0;margin-top:.15rem;
+  border:1px solid rgba(0,170,220,.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.62rem;color:var(--sea);
+  transition:background .25s,border-color .25s;
+}
+.pkg:hover .ck{background:rgba(0,170,220,.1);border-color:var(--sea)}
+.pkg-btn{
+  width:100%;padding:1rem;
+  border:1px solid var(--border);background:transparent;
+  color:var(--white);font-family:'Outfit',sans-serif;
+  font-size:.78rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;cursor:none;
+  position:relative;overflow:hidden;transition:border-color .3s;
+  text-decoration:none;display:block;text-align:center;
+}
+.pkg-btn::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(90deg,var(--blue),var(--sea));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .4s cubic-bezier(.16,1,.3,1);
+}
+.pkg-btn:hover::before{transform:scaleX(1)}
+.pkg-btn span{position:relative;z-index:1}
+.pkg.feat .pkg-btn{
+  border-color:var(--sea);color:var(--sea);
+}
+.pkg.feat .pkg-btn::before{background:var(--sea)}
+.pkg.feat .pkg-btn:hover span{color:var(--bg)}
+
+/* BUNDLE STRIP */
+.bundle{
+  background:var(--bg);padding:2.6rem 3.2rem;
+  border:1px solid var(--border);border-top:none;
+  display:flex;align-items:center;justify-content:space-between;gap:2rem;
+}
+.bundle-info h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.5rem;font-weight:700;color:var(--white);margin-bottom:.35rem;
+}
+.bundle-info p{font-size:.86rem;color:var(--muted)}
+.bundle-price{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.2rem;font-weight:700;color:var(--sea);white-space:nowrap;text-align:right;
+}
+.bundle-price small{font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:300;color:var(--muted);display:block;margin-top:.2rem}
+
+/* PROCESS */
+.process{padding:8rem 6rem}
+.steps-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  border:1px solid var(--border);margin-top:5rem;
+}
+.stp{
+  padding:3rem 2.2rem;border-right:1px solid var(--border);
+  position:relative;overflow:hidden;cursor:none;
+  transition:background .3s;
+}
+.stp:last-child{border-right:none}
+.stp:hover{background:rgba(0,100,170,.1)}
+.stp-bar{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--ocean),var(--sea));transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.16,1,.3,1)}
+.stp:hover .stp-bar{transform:scaleX(1)}
+.stp-n{
+  font-family:'Cormorant Garamond',serif;
+  font-size:4rem;font-weight:700;line-height:1;
+  color:transparent;-webkit-text-stroke:1px rgba(0,170,220,.18);
+  margin-bottom:1.5rem;transition:-webkit-text-stroke-color .3s;
+}
+.stp:hover .stp-n{-webkit-text-stroke-color:rgba(0,170,220,.55)}
+.stp-t{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.3rem;font-weight:700;color:var(--white);margin-bottom:.8rem;
+}
+.stp-d{font-size:.86rem;line-height:1.75;color:var(--muted)}
+
+/* INCLUDED */
+.included{padding:8rem 6rem;background:var(--surface)}
+.inc-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1px;background:var(--border);margin-top:4.5rem;
+}
+.inc-item{
+  background:var(--surface);padding:2.8rem 2.5rem;
+  cursor:none;transition:background .3s;position:relative;overflow:hidden;
+}
+.inc-item:hover{background:rgba(0,70,130,.35)}
+.inc-glow{
+  position:absolute;top:-40%;left:-40%;width:180%;height:180%;
+  background:radial-gradient(circle,rgba(0,170,220,.05) 0%,transparent 60%);
+  opacity:0;transition:opacity .4s;pointer-events:none;
+}
+.inc-item:hover .inc-glow{opacity:1}
+.inc-icon{
+  width:40px;height:40px;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:1.4rem;font-size:.85rem;color:var(--sea);
+  font-family:'Outfit',sans-serif;font-weight:500;letter-spacing:.05em;
+  transition:border-color .3s,background .3s;
+}
+.inc-item:hover .inc-icon{border-color:var(--sea);background:rgba(0,170,220,.08)}
+.inc-t{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.25rem;font-weight:700;color:var(--white);margin-bottom:.7rem;
+}
+.inc-d{font-size:.86rem;line-height:1.78;color:var(--muted)}
+
+/* TESTIMONIAL */
+.testi{
+  padding:9rem 6rem;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  text-align:center;position:relative;overflow:hidden;
+}
+.testi::before{
+  content:'\201C';position:absolute;
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:32rem;color:rgba(0,170,220,.04);
+  top:-8rem;left:0;line-height:1;pointer-events:none;
+}
+.testi-q{
+  font-family:'Cormorant Garamond',serif;font-style:italic;
+  font-size:clamp(1.5rem,2.6vw,2.2rem);line-height:1.55;
+  max-width:780px;margin:0 auto 2rem;color:var(--white);
+}
+.testi-q em{font-style:normal;color:var(--sea)}
+.testi-by{font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+/* FAQ */
+.faq{padding:8rem 6rem}
+.faq-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:0;border:1px solid var(--border);margin-top:4.5rem;
+}
+.faq-item{
+  padding:2.4rem 2.8rem;border-bottom:1px solid var(--border);border-right:1px solid var(--border);
+  cursor:none;transition:background .25s;
+}
+.faq-item:hover{background:rgba(0,80,140,.12)}
+.faq-item:nth-child(2n){border-right:none}
+.faq-item:nth-last-child(-n+2){border-bottom:none}
+.faq-q{
+  font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;
+  color:var(--white);margin-bottom:.8rem;line-height:1.35;
+}
+.faq-a{font-size:.87rem;line-height:1.8;color:var(--muted)}
+
+/* CTA */
+.cta{
+  padding:10rem 6rem;text-align:center;
+  background:var(--surface);
+  border-top:1px solid var(--border);
+}
+.cta .sec-title{font-size:clamp(3rem,7vw,7rem);margin-bottom:1.5rem}
+.cta-sub{font-size:1rem;color:var(--muted);max-width:400px;margin:0 auto 3.5rem;line-height:1.8}
+.cta-actions{display:flex;gap:1.8rem;justify-content:center;align-items:center;flex-wrap:wrap}
+.cta-email{
+  font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);margin-top:2.5rem;
+}
+.cta-email a{color:var(--sea);text-decoration:none;border-bottom:1px solid rgba(0,170,220,.3);padding-bottom:.1rem;transition:border-color .25s,color .25s}
+.cta-email a:hover{color:var(--foam);border-color:var(--foam)}
+
+/* FOOTER */
+footer{
+  padding:2.5rem 6rem;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.f-logo{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700;letter-spacing:.06em}
+.f-logo span{color:var(--sea)}
+.f-links{display:flex;gap:2.2rem;list-style:none}
+.f-links a{color:var(--muted);text-decoration:none;font-size:.73rem;letter-spacing:.12em;text-transform:uppercase;transition:color .2s}
+.f-links a:hover{color:var(--sea)}
+.f-copy{font-size:.73rem;color:var(--muted);letter-spacing:.05em}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}
+
+/* MOBILE */
+@media(max-width:960px){
+  nav{padding:1.2rem 2rem}
+  .nav-links{display:none}
+  .hero,.about,.pricing,.process,.included,.testi,.faq,.cta{padding:5rem 2rem}
+  .rule{margin:0 2rem}
+  .about{grid-template-columns:1fr;gap:3.5rem}
+  .cards-wrap{grid-template-columns:1fr}
+  .steps-grid{grid-template-columns:1fr 1fr}
+  .stp{border-right:none;border-bottom:1px solid var(--border)}
+  .inc-grid{grid-template-columns:1fr 1fr}
+  .faq-grid{grid-template-columns:1fr}
+  .faq-item{border-right:none}
+  .faq-item:nth-last-child(-n+2){border-bottom:1px solid var(--border)}
+  .faq-item:last-child{border-bottom:none}
+  .pricing-head{flex-direction:column;align-items:flex-start}
+  .bundle{flex-direction:column;align-items:flex-start}
+  .bundle-price{text-align:left}
+  .cta-actions{flex-direction:column}
+  footer{flex-direction:column;gap:1.5rem;text-align:center;padding:2rem}
+  .hero-scroll{display:none}
+  .stats-row{gap:2rem}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur2"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Neat<span>Web</span> Co.</div>
+  <ul class="nav-links">
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#included">Included</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <a href="mailto:neatwebco769@gmail.com" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-eyebrow">Professional Website Creation</div>
+  <h1 class="hl">
+    <span class="ln"><span>Your Business</span></span>
+    <span class="ln"><span>Deserves a Website</span></span>
+    <span class="ln"><span class="it">Worth Remembering.</span></span>
+  </h1>
+  <p class="hero-body">I build fully custom, high-performance websites for businesses that want to make the right impression — and turn visitors into customers. You focus on what you do best; I'll handle the rest.</p>
+  <div class="hero-acts">
+    <a href="mailto:neatwebco769@gmail.com" class="btn-primary">Get Started</a>
+    <a href="#pricing" class="btn-ghost">View Pricing</a>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-track"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ABOUT -->
+<div class="about">
+  <div class="about-l reveal">
+    <h2>Your website is your<br>most valuable<br><em>sales tool.</em></h2>
+    <div class="stats-row">
+      <div><span class="s-val count" data-t="50">0</span>+<span class="s-lbl">Sites Delivered</span></div>
+      <div><span class="s-val count" data-t="100">0</span>%<span class="s-lbl">Satisfaction</span></div>
+      <div><span class="s-val count" data-t="7">0</span>d<span class="s-lbl">Avg. Launch</span></div>
+    </div>
+  </div>
+  <div class="about-r reveal d2">
+    <p>Every website I build is crafted entirely from scratch — no templates, no generic layouts. I take the time to understand your business, your customers, and what sets you apart.</p>
+    <p>The result is a website that looks exceptional, loads fast, works perfectly on every device, and <strong>actually converts visitors into paying customers.</strong></p>
+    <p>Simple packages. Transparent pricing. Real results.</p>
+  </div>
+</div>
+
+<div class="rule"></div>
+
+<!-- PRICING -->
+<section class="pricing" id="pricing">
+  <div class="pricing-head">
+    <div>
+      <div class="sec-eyebrow reveal">Investment</div>
+      <h2 class="sec-title reveal">Simple, Honest<br><span class="it">Pricing.</span></h2>
+    </div>
+    <p class="pricing-note reveal d2">No hidden fees. No surprises. Everything you need laid out clearly — pick what works for you.</p>
+  </div>
+
+  <div class="cards-wrap reveal">
+
+    <!-- WEBSITE -->
+    <div class="pkg">
+      <div class="pkg-name">The Website</div>
+      <p class="pkg-sub">A fully custom, hand-built website designed around your brand and your goals.</p>
+      <div class="price-row">
+        <span class="pr-sym">€</span>
+        <span class="pr-num">199</span>
+        <span class="pr-per">one-time</span>
+      </div>
+      <div class="pkg-div"></div>
+      <ul class="feat-list">
+        <li><span class="ck">+</span>Up to 5 fully designed pages</li>
+        <li><span class="ck">+</span>100% custom — zero templates</li>
+        <li><span class="ck">+</span>Mobile and tablet responsive</li>
+        <li><span class="ck">+</span>Fast loading and performance optimised</li>
+        <li><span class="ck">+</span>Contact form and Google Maps</li>
+        <li><span class="ck">+</span>Basic SEO setup included</li>
+        <li><span class="ck">+</span>Delivered in 5–10 business days</li>
+        <li><span class="ck">+</span>2 rounds of revisions included</li>
+      </ul>
+      <a href="mailto:neatwebco769@gmail.com?subject=Website%20Package%20Enquiry" class="pkg-btn"><span>Enquire About This Package</span></a>
+    </div>
+
+    <!-- DOMAIN (FEATURED) -->
+    <div class="pkg feat">
+      <div class="pkg-label">Recommended Add-on</div>
+      <div class="pkg-name">Custom Domain</div>
+      <p class="pkg-sub">Your own professional web address. yourname.com — not a generic link.</p>
+      <div class="price-row">
+        <span class="pr-sym">€</span>
+        <span class="pr-num">12</span>
+        <span class="pr-per">per year</span>
+      </div>
+      <div class="pkg-div"></div>
+      <ul class="feat-list">
+        <li><span class="ck">+</span>Domain name of your choice (.com, .ie, .co.uk)</li>
+        <li><span class="ck">+</span>Full DNS setup and configuration</li>
+        <li><span class="ck">+</span>Connected directly to your site</li>
+        <li><span class="ck">+</span>SSL certificate — secure https://</li>
+        <li><span class="ck">+</span>Looks professional and builds trust</li>
+        <li><span class="ck">+</span>Renews at the same rate every year</li>
+      </ul>
+      <a href="mailto:neatwebco769@gmail.com?subject=Domain%20Add-on%20Enquiry" class="pkg-btn"><span>Add This to My Project</span></a>
+    </div>
+
+    <!-- MAINTENANCE -->
+    <div class="pkg">
+      <div class="pkg-name">Monthly Maintenance</div>
+      <p class="pkg-sub">I keep your site running perfectly — updated, secure, and always looking its best.</p>
+      <div class="price-row">
+        <span class="pr-sym">€</span>
+        <span class="pr-num">12</span>
+        <span class="pr-per">per month</span>
+      </div>
+      <div class="pkg-div"></div>
+      <ul class="feat-list">
+        <li><span class="ck">+</span>Monthly content and text updates</li>
+        <li><span class="ck">+</span>Software and plugin updates</li>
+        <li><span class="ck">+</span>Security monitoring and protection</li>
+        <li><span class="ck">+</span>Regular backups</li>
+        <li><span class="ck">+</span>Speed and performance checks</li>
+        <li><span class="ck">+</span>Priority email and WhatsApp support</li>
+        <li><span class="ck">+</span>Small design tweaks included</li>
+        <li><span class="ck">+</span>Cancel anytime — no contracts</li>
+      </ul>
+      <a href="mailto:neatwebco769@gmail.com?subject=Maintenance%20Plan%20Enquiry" class="pkg-btn"><span>Add Maintenance Plan</span></a>
+    </div>
+
+  </div>
+
+  <!-- BUNDLE -->
+  <div class="bundle reveal">
+    <div class="bundle-info">
+      <h3>The Complete Package</h3>
+      <p>Website + Custom Domain + Monthly Maintenance — everything you need, under one roof.</p>
+    </div>
+    <div class="bundle-price">
+      €211 upfront
+      <small>+ €12 / month thereafter</small>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="sec-eyebrow reveal">How It Works</div>
+  <h2 class="sec-title reveal">From first message<br>to <span class="it">live website.</span></h2>
+  <div class="steps-grid reveal">
+    <div class="stp">
+      <div class="stp-bar"></div>
+      <div class="stp-n">01</div>
+      <div class="stp-t">Discovery</div>
+      <p class="stp-d">We talk about your business, your goals, and what you love. I get to know your brand properly before I write a single line of code.</p>
+    </div>
+    <div class="stp">
+      <div class="stp-bar"></div>
+      <div class="stp-n">02</div>
+      <div class="stp-t">Design and Build</div>
+      <p class="stp-d">I craft everything from scratch — layout, animations, colours, fonts — all tailored precisely to your brand. No templates, ever.</p>
+    </div>
+    <div class="stp">
+      <div class="stp-bar"></div>
+      <div class="stp-n">03</div>
+      <div class="stp-t">Review and Refine</div>
+      <p class="stp-d">You receive a live preview. We refine until it is perfect — 2 rounds of revisions included. Most clients are delighted on the first draft.</p>
+    </div>
+    <div class="stp">
+      <div class="stp-bar"></div>
+      <div class="stp-n">04</div>
+      <div class="stp-t">Go Live</div>
+      <p class="stp-d">Your site launches on your custom domain. I handle all the technical setup — hosting, SSL, speed optimisation. You just celebrate.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INCLUDED -->
+<section class="included" id="included">
+  <div class="sec-eyebrow reveal">What You Get</div>
+  <h2 class="sec-title reveal">Every site is built<br>to <span class="it">the highest standard.</span></h2>
+  <div class="inc-grid reveal">
+    <div class="inc-item">
+      <div class="inc-glow"></div>
+      <div class="inc-icon">01</div>
+      <div class="inc-t">Lightning Fast</div>
+      <p class="inc-d">Optimised images, clean code, and fast hosting. Your site loads in under 2 seconds — excellent for Google rankings and your visitors' patience.</p>
+    </div>
+    <div class="inc-item">
+      <div class="inc-glow"></div>
+      <div class="inc-icon">02</div>
+      <div class="inc-t">Mobile First</div>
+      <p class="inc-d">More than 60% of web traffic is mobile. Your site looks and works flawlessly on every phone, tablet, and screen size without exception.</p>
+    </div>
+    <div class="inc-item">
+      <div class="inc-glow"></div>
+      <div class="inc-icon">03</div>
+      <div class="inc-t">SEO Foundation</div>
+      <p class="inc-d">Meta titles, descriptions, image tags, clean URLs, and proper heading structure — built in from day one so Google can find you.</p>
+    </div>
+    <div class="inc-item">
+      <div class="inc-glow"></div>
+      <div class="inc-icon">04</div>
+      <div class="inc-t">Fully Custom Design</div>
+      <p class="inc-d">No Squarespace templates. Every pixel is crafted for your brand — your colours, your fonts, your personality. Genuinely unique.</p>
+    </div>
+    <div class="inc-item">
+      <div class="inc-glow"></div>
+      <div class="inc-icon">05</div>
+      <div class="inc-t">Premium Motion</div>
+      <p class="inc-d">Smooth scroll effects, hover interactions, and polished animation — the kind of detail that makes visitors take notice and trust what they see.</p>
+    </div>
+    <div class="inc-item">
+      <div class="inc-glow"></div>
+      <div class="inc-icon">06</div>
+      <div class="inc-t">Secure and GDPR Ready</div>
+      <p class="inc-d">SSL certificate, cookie notice, privacy-compliant forms. Your visitors are protected and so are you — legally covered from the start.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<div class="testi">
+  <div class="reveal">
+    <p class="testi-q">"I had no idea a website at this price could look this <em>professional</em>. Clients tell me regularly it was my website that made them choose me over everyone else."</p>
+    <div class="testi-by">Sarah M. — Owner, Bloom Interiors</div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="sec-eyebrow reveal">FAQ</div>
+  <h2 class="sec-title reveal">Common Questions<br><span class="it">Answered.</span></h2>
+  <div class="faq-grid reveal">
+    <div class="faq-item">
+      <div class="faq-q">How long does a website take to build?</div>
+      <p class="faq-a">Most websites are delivered within 5–10 business days from the agreed start date. You will receive a clear timeline at the very beginning of your project.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Do I need to provide the content?</div>
+      <p class="faq-a">Ideally yes — you know your business best. If you need guidance I can help you structure your copy and advise on what each section needs. Photos can also be sourced.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What if I need changes after the site is live?</div>
+      <p class="faq-a">Small updates — text changes, new images, minor tweaks — are included in the monthly maintenance plan. Larger redesigns are quoted separately at a fair rate.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I cancel the maintenance plan?</div>
+      <p class="faq-a">Absolutely — no contracts, no lock-in periods. You can cancel the maintenance plan at any time. Your website remains live; I simply stop managing it on your behalf.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What exactly does maintenance cover?</div>
+      <p class="faq-a">Monthly content updates, security patches, software updates, regular backups, performance checks, and priority support via email or WhatsApp — all for €12 per month.</p>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How many revisions are included?</div>
+      <p class="faq-a">Every project includes 2 full rounds of revisions before launch. In practice, most clients are happy after the first version — but I want you to be completely satisfied.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+  <div class="sec-eyebrow reveal" style="justify-content:center">Ready to begin?</div>
+  <h2 class="sec-title reveal" style="text-align:center">
+    Let's build something<br><span class="it">brilliant together.</span>
+  </h2>
+  <p class="cta-sub reveal d1">Your professional website starts at just €199. Get in touch today and let's bring your vision to life.</p>
+  <div class="cta-actions reveal d2">
+    <a href="mailto:neatwebco769@gmail.com?subject=Website%20Enquiry" class="btn-primary">Start My Project</a>
+    <a href="#pricing" class="btn-ghost">Review Pricing First</a>
+  </div>
+  <p class="cta-email reveal d3">Or email directly at <a href="mailto:neatwebco769@gmail.com">neatwebco769@gmail.com</a></p>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">Neat<span>Web</span> Co.</div>
+  <ul class="f-links">
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#included">Included</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <div class="f-copy">© 2025 NeatWeb Co. All rights reserved.</div>
+</footer>
+
+<script>
+/* CURSOR */
+const cur=document.getElementById('cur'),cur2=document.getElementById('cur2');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+(function loop(){rx+=(mx-rx)*.11;ry+=(my-ry)*.11;cur2.style.left=rx+'px';cur2.style.top=ry+'px';requestAnimationFrame(loop)})();
+document.querySelectorAll('a,button,.pkg,.stp,.inc-item,.faq-item').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2.2)';cur2.style.borderColor='rgba(0,210,250,.85)';cur2.style.transform='translate(-50%,-50%) scale(1.35)'});
+  el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';cur2.style.borderColor='rgba(0,170,220,.45)';cur2.style.transform='translate(-50%,-50%) scale(1)'});
+});
+
+/* SCROLL REVEAL */
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target)}})
+},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+/* COUNTERS */
+const co=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      const el=e.target,t=+el.dataset.t;let c=0;
+      const tm=setInterval(()=>{c+=t/55;if(c>=t){c=t;clearInterval(tm)}el.textContent=Math.floor(c)},18);
+      co.unobserve(el);
+    }
+  })
+},{threshold:.5});
+document.querySelectorAll('.count').forEach(el=>co.observe(el));
+
+/* CARD 3D TILT */
+document.querySelectorAll('.pkg').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect();
+    const x=(e.clientX-r.left)/r.width-.5;
+    const y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`translateY(-7px) rotateX(${y*-6}deg) rotateY(${x*6}deg)`;
+    card.style.transition='transform .07s ease';
+  });
+  card.addEventListener('mouseleave',()=>{
+    card.style.transform='';
+    card.style.transition='transform .5s cubic-bezier(.16,1,.3,1)';
+  });
+});
+
+/* STEP HOVER — already CSS, just nice */
+</script>
+</body>
+</html>
